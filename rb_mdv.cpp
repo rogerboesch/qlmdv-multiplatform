@@ -5,7 +5,12 @@ extern "C" {
     #include "qlayt.h"
 }
 
-RBMdv::RBMdv(std::string name, std::string path) {
+RBMdv::RBMdv() {
+    m_name = "";
+    m_path = "";
+}
+
+void RBMdv::Load(std::string name, std::string path) {
     m_name = name;
     m_path = path;
     

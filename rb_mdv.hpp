@@ -6,8 +6,9 @@
 
 class RBMdv {
 public:
-    RBMdv(std::string name, std::string path);
+    RBMdv();
 
+    void Load(std::string name, std::string path);
     std::vector<std::string> List();
     void Add(std::string filename);
     void Export(std::string filename);

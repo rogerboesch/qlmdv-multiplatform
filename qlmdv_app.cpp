@@ -37,14 +37,37 @@ bool rbListBox(const char* label, int* currIndex, std::vector<std::string>& valu
 QLMdvApp app;
 
 QLMdvApp::QLMdvApp() {
+    m_selectedDir = -1;
+    m_selectedFile = -1;
+    m_filename = "";
 }
 
 void QLMdvApp::MapDirectory() {
-    int selectedLine;
     std::vector<std::string> values = m_directory.List();
-    igPushItemWidth(200);
-    rbListBox("", &selectedLine, values);
-    igPopItemWidth();
+    ImGui::PushItemWidth(200);
+    rbListBox("", &m_selectedDir, values);
+    ImGui::PopItemWidth();
+}
+
+void QLMdvApp::MapMdv() {
+    if (m_selectedFile != -1) {
+        std::vector<std::string> values = m_mdv.List();
+        ImGui::PushItemWidth(200);
+        rbListBox("", &m_selectedFile, values);
+        ImGui::PopItemWidth();
+    }
+    else {
+        ImGui::TextWrapped("No MDV image selected");
+    }
+}
+
+void QLMdvApp::MapFilePreview() {
+    if (m_filename.size() > 0) {
+        ImGui::TextWrapped("Here a text editor will be inserted");
+    }
+    else {
+        ImGui::TextWrapped("No file selected");
+    }
 }
 
 void QLMdvApp::Frame(const float width, const float height) {
@@ -76,12 +99,13 @@ void QLMdvApp::Frame(const float width, const float height) {
     ImGui::SetNextWindowPos(ImVec2(2*panel_margin+panel_width, panel_top), ImGuiCond_Once, (ImVec2){0,0});
     ImGui::SetNextWindowSize(ImVec2(panel_width, panel_height), ImGuiCond_Once);
     ImGui::Begin("MDV image", 0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+    MapMdv();
     ImGui::End();
 
     ImGui::SetNextWindowPos(ImVec2(3*panel_margin+2*panel_width, panel_top), ImGuiCond_Once, (ImVec2){0,0});
     ImGui::SetNextWindowSize(ImVec2(last_panel_width, panel_height), ImGuiCond_Once);
     ImGui::Begin("Preview", 0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-    ImGui::TextWrapped("This example implements a console with basic coloring, completion and history. A more elaborate implementation may want to store entries along with extra data such as timestamp, emitter, etc.");
+    MapFilePreview();
     ImGui::End();
 }
 
