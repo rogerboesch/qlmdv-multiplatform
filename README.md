@@ -14,23 +14,32 @@ In the current stage I have just slightly changed the qlt c-functions itself, bu
 
 ### How to build
 
-> git clone https://github.com/rogerboesch/qlmdv-multiplatform.git
-> cd qlmdv-multiplatform
-> mkdir build
-> cd build
+```bash
+git clone https://github.com/rogerboesch/qlmdv-multiplatform.git
+cd qlmdv-multiplatform
+mkdir build
+cd build
+```
+
 
 **Build for Windows (Visual Studio Code)**
 
-> cmake ..
-> cmake --build . --config MinSizeRel
+```bash
+cmake ..
+cmake --build . --config MinSizeRel
+```
 
 
 **Build for macOS (XCode)**
 
-> cmake -GXcode ..
+```bash
+cmake -GXcode ..
+```
 
 
 **Build for Linux**
 
-> cmake -DCMAKE_BUILD_TYPE=MinSizeRel ..
-> cmake --build .
+```bash
+cmake -DCMAKE_BUILD_TYPE=MinSizeRel ..
+cmake --build .
+```
