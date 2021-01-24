@@ -49,10 +49,15 @@ target_link_libraries(sokol PUBLIC cimgui)
 target_include_directories(sokol INTERFACE sokol)
 
 #=== EXECUTABLE: qlmdv
+set(APP_HEADERS
+    qlayt.h
+    qlmdv_app.hpp
+    rb_directory.hpp
+    rb_mdv.hpp)
 if(CMAKE_SYSTEM_NAME STREQUAL Windows)
-    add_executable(qlmdv WIN32 qlmdv.c)
+    add_executable(qlmdv WIN32 rb_app.c ${APP_HEADERS})
 else()
-    add_executable(qlmdv qlmdv.c)
+    add_executable(qlmdv rb_app.c qlt_mdv.c qlt_util.c qlmdv_app.cpp rb_mdv.cpp rb_directory.cpp ${APP_HEADERS})
 endif()
 target_link_libraries(qlmdv sokol)
 

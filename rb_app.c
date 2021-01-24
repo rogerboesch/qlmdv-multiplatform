@@ -10,6 +10,8 @@
 #include "cimgui.h"
 #include "sokol_imgui.h"
 
+extern void rbigMapListDirectory(void);
+
 static struct {
     uint64_t laptime;
     sg_pass_action pass_action;
@@ -44,11 +46,19 @@ static void frame(void) {
     igSetNextWindowPos((ImVec2){0, panel_margin}, ImGuiCond_Once, (ImVec2){0,0});
     igSetNextWindowSize((ImVec2){width, toolbar_height}, ImGuiCond_Once);
     igBegin("Toolbar", 0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
+    igBeginGroup();
+        igButton("New MDV", (ImVec2){0,0});
+        igSameLine(0, 10);
+        igButton("Export File", (ImVec2){0,0});
+        igSameLine(0, 10);
+        igButton("Add File", (ImVec2){0,0});
+    igEndGroup();
     igEnd();
-
+    
     igSetNextWindowPos((ImVec2){panel_margin, panel_top}, ImGuiCond_Once, (ImVec2){0,0});
     igSetNextWindowSize((ImVec2){panel_width, panel_height}, ImGuiCond_Once);
     igBegin("Directories", 0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+        rbigMapListDirectory();
     igEnd();
 
     igSetNextWindowPos((ImVec2){2*panel_margin+panel_width, panel_top}, ImGuiCond_Once, (ImVec2){0,0});
@@ -59,7 +69,11 @@ static void frame(void) {
     igSetNextWindowPos((ImVec2){3*panel_margin+2*panel_width, panel_top}, ImGuiCond_Once, (ImVec2){0,0});
     igSetNextWindowSize((ImVec2){last_panel_width, panel_height}, ImGuiCond_Once);
     igBegin("Preview", 0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+        igTextWrapped("This example implements a console with basic coloring, completion and history. A more elaborate implementation may want to store entries along with extra data such as timestamp, emitter, etc.");
     igEnd();
+
+    ImDrawList* drawing = igGetForegroundDrawListNil();
+    ImDrawList_AddLine(drawing, (ImVec2){0,0}, (ImVec2){100,100}, igGetColorU32U32(ImGuiCol_Button), 10);
 
     sg_begin_default_pass(&state.pass_action, width, height);
     simgui_render();
