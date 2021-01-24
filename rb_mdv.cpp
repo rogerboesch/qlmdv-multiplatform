@@ -8,6 +8,7 @@ extern "C" {
 RBMdv::RBMdv() {
     m_name = "";
     m_path = "";
+    m_loaded = false;
 }
 
 void RBMdv::Load(std::string name, std::string path) {

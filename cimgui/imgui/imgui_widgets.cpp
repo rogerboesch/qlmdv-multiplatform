@@ -6163,8 +6163,9 @@ bool ImGui::ListBox(const char* label, int* current_item, const char* const item
 
 bool ImGui::ListBox(const char* label, int* current_item, bool (*items_getter)(void*, int, const char**), void* data, int items_count, int height_in_items)
 {
-    if (!ListBoxHeader(label, items_count, height_in_items))
-        return false;
+    // MARK: Not sure how to disable, so just remove it
+    //if (!ListBoxHeader(label, items_count, height_in_items))
+      //  return false;
 
     // Assume all items have even height (= 1 line of text). If you need items of different or variable sizes you can create a custom version of ListBox() in your code without using the clipper.
     ImGuiContext& g = *GImGui;
@@ -6189,7 +6190,10 @@ bool ImGui::ListBox(const char* label, int* current_item, bool (*items_getter)(v
                 SetItemDefaultFocus();
             PopID();
         }
-    ListBoxFooter();
+    
+    // MARK: Not sure how to disable, so just remove it
+    //ListBoxFooter();
+    
     if (value_changed)
         MarkItemEdited(g.CurrentWindow->DC.LastItemId);
 

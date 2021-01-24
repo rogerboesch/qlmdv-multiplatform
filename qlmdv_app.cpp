@@ -56,8 +56,6 @@ void QLMdvApp::MapDirectory() {
     rbListBox("directory", &m_selectedDir, values);
     ImGui::PopItemWidth();
 
-    ImGui::Selectable("directory", &m_selectedDir, ImGuiSelectableFlags_AllowDoubleClick);
-
     if (m_selectedDir != m_currentDir) {
         m_currentDir = m_selectedDir;
         
@@ -89,8 +87,6 @@ void QLMdvApp::MapMdv() {
             ImGui::PushItemWidth(200);
             rbListBox("mdv", &m_selectedFile, values);
             ImGui::PopItemWidth();
-            
-            ImGui::Selectable("mdv", &m_selectedFile);
 
             if (m_selectedFile != m_currentFile) {
                 m_currentFile = m_selectedFile;
@@ -142,10 +138,22 @@ void QLMdvApp::Frame(const float width, const float height) {
     ImGui::Begin("Toolbar", 0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
     ImGui::BeginGroup();
     ImGui::Button("New MDV", (ImVec2){0,0});
-    ImGui::SameLine(0, 10);
-    ImGui::Button("Export File", (ImVec2){0,0});
-    ImGui::SameLine(0, 10);
-    ImGui::Button("Add File", (ImVec2){0,0});
+    
+    if (m_mdv.IsLoaded()) {
+        ImGui::SameLine(0, 10);
+        ImGui::Button("Add File", (ImVec2){0,0});
+    }
+    
+    if (m_filename.size() > 0) {
+        ImGui::SameLine(0, 10);
+        ImGui::Button("Remove File", (ImVec2){0,0});
+    }
+    
+    if (m_filename.size() > 0) {
+        ImGui::SameLine(0, 10);
+        ImGui::Button("Export File", (ImVec2){0,0});
+    }
+
     ImGui::EndGroup();
     ImGui::End();
 
