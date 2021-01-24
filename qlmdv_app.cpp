@@ -45,8 +45,21 @@ QLMdvApp::QLMdvApp() {
 void QLMdvApp::MapDirectory() {
     std::vector<std::string> values = m_directory.List();
     ImGui::PushItemWidth(200);
-    rbListBox("", &m_selectedDir, values);
+    rbListBox("directory", &m_selectedDir, values);
     ImGui::PopItemWidth();
+
+    ImGui::Selectable("directory", &m_selectedDir, ImGuiSelectableFlags_AllowDoubleClick);
+
+    if (ImGui::IsMouseDoubleClicked(0)) {
+        m_directory.JumpTo(m_selectedDir);
+    }
+    
+    if (m_directory.IsFile(m_selectedDir)) {
+        printf("Is file\n");
+    }
+    if (m_directory.IsDirectory(m_selectedDir)) {
+        printf("Is directory\n");
+    }
 }
 
 void QLMdvApp::MapMdv() {

@@ -8,12 +8,15 @@ class RBDirectory {
 public:
     RBDirectory();
 
-    void AddPath(std::string path);
-    void RemovePath();
-    
+    bool JumpTo(int index);
+    bool IsFile(int index);
+    bool IsDirectory(int index);
+
     std::vector<std::string> List() { return m_files; }
 
 private:
+    bool AddPath(std::string path);
+    void RemovePath();
     void Read();
     std::string BuildPath();
 
