@@ -23,7 +23,8 @@ private:
     TextEditor m_editor;
 
     int m_selectedDir;
-    int m_selectedFile;
     int m_currentDir;
+    int m_selectedFile;
+    int m_currentFile;
     std::string m_filename;
 };

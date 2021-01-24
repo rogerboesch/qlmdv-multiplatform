@@ -2,7 +2,7 @@
 ## QLmdv
 #### Multiplatform-Frontend for the qlt tools
 
-*(Screenshot coming soon)*
+![Screenshot QLmdv](assets/screen1.png)
 
 This is a quick and dirty hack (I made in a few hours) to simplify the usage of the qlt tools.
 It allows to manage microdrive image files for the Sinclair QL in an easy way.

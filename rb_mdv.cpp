@@ -32,21 +32,33 @@ int RBMdv::NumberOfFiles() {
     return m_files.size();
 }
 
+std::string RBMdv::GetFilename(int index) {
+    if (index >= 0 && index < m_files.size()) {
+        std::string path = m_temporaryPath + "/" + m_files[index];
+        return path;
+    }
+    
+    return "";
+}
+
 void RBMdv::Add(std::string filename) {
     m_files.emplace_back(filename);
     LoadFiles();
 }
 
-void RBMdv::Export(std::string filename) {
-    return false;
+void RBMdv::ExportAll() {
+    std::string path = m_path + "/" + m_name;
+    
+    printf("Export all files to %s\n", m_temporaryPath.c_str());
+    
+    resetglobals();
+    int result = mdv2fil((char *)path.c_str(), 1);
 }
 
 void RBMdv::Delete(std::string filename) {
-    return false;
 }
 
 void RBMdv::AddAll() {
-    return false;
 }
 
 void RBMdv::LoadFiles() {
@@ -64,4 +76,9 @@ void RBMdv::LoadFiles() {
     }
     
     m_loaded = true;
+}
+
+void RBMdv::SetTemporaryPath(std::string path) {
+    m_temporaryPath = path;
+    strcpy(temppath, path.c_str());
 }

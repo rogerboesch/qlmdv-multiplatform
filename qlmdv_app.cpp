@@ -1,5 +1,8 @@
 
 #include "qlmdv_app.hpp"
+#include <filesystem>
+#include <fstream>
+#include <streambuf>
 
 #include "./imgui/imgui.h"
 #ifdef CIMGUI_FREETYPE
@@ -40,7 +43,11 @@ QLMdvApp::QLMdvApp() {
     m_selectedDir = 0;
     m_selectedFile = 0;
     m_currentDir = -1;
+    m_currentFile = -1;
     m_filename = "";
+    
+    std::string path = std::__fs::filesystem::temp_directory_path();
+    m_mdv.SetTemporaryPath(path);
 }
 
 void QLMdvApp::MapDirectory() {
@@ -58,12 +65,20 @@ void QLMdvApp::MapDirectory() {
             std::string name = m_directory.GetName(m_selectedDir);
             std::string path = m_directory.GetPath();
             m_mdv.Load(name, path);
+            
+            m_filename = "";
+            m_currentFile = 0;
+            m_selectedFile = -1;
         }
     }
     
     if (ImGui::IsMouseDoubleClicked(0)) {
         m_directory.JumpTo(m_selectedDir);
         m_mdv.Unload();
+        
+        m_selectedFile = 0;
+        m_currentFile = -1;
+        m_filename = "";
     }
 }
 
@@ -72,8 +87,29 @@ void QLMdvApp::MapMdv() {
         if (m_mdv.NumberOfFiles() > 0) {
             std::vector<std::string> values = m_mdv.List();
             ImGui::PushItemWidth(200);
-            rbListBox("", &m_selectedFile, values);
+            rbListBox("mdv", &m_selectedFile, values);
             ImGui::PopItemWidth();
+            
+            ImGui::Selectable("mdv", &m_selectedFile);
+
+            if (m_selectedFile != m_currentFile) {
+                m_currentFile = m_selectedFile;
+                
+                m_mdv.ExportAll();
+                
+                m_filename = m_mdv.GetFilename(m_currentFile);
+                
+                // Load file
+                std::ifstream t(m_filename);
+                
+                if (t.good()) {
+                    std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
+                    m_editor.SetText(str);
+                }
+                else {
+                    m_filename = "";
+                }
+            }
         }
         else {
             ImGui::TextWrapped("MDV image is empty");
