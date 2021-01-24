@@ -37,8 +37,9 @@ bool rbListBox(const char* label, int* currIndex, std::vector<std::string>& valu
 QLMdvApp app;
 
 QLMdvApp::QLMdvApp() {
-    m_selectedDir = -1;
-    m_selectedFile = -1;
+    m_selectedDir = 0;
+    m_selectedFile = 0;
+    m_currentDir = -1;
     m_filename = "";
 }
 
@@ -50,24 +51,33 @@ void QLMdvApp::MapDirectory() {
 
     ImGui::Selectable("directory", &m_selectedDir, ImGuiSelectableFlags_AllowDoubleClick);
 
-    if (ImGui::IsMouseDoubleClicked(0)) {
-        m_directory.JumpTo(m_selectedDir);
+    if (m_selectedDir != m_currentDir) {
+        m_currentDir = m_selectedDir;
+        
+        if (m_directory.IsFile(m_selectedDir)) {
+            std::string name = m_directory.GetName(m_selectedDir);
+            std::string path = m_directory.GetPath();
+            m_mdv.Load(name, path);
+        }
     }
     
-    if (m_directory.IsFile(m_selectedDir)) {
-        printf("Is file\n");
-    }
-    if (m_directory.IsDirectory(m_selectedDir)) {
-        printf("Is directory\n");
+    if (ImGui::IsMouseDoubleClicked(0)) {
+        m_directory.JumpTo(m_selectedDir);
+        m_mdv.Unload();
     }
 }
 
 void QLMdvApp::MapMdv() {
-    if (m_selectedFile != -1) {
-        std::vector<std::string> values = m_mdv.List();
-        ImGui::PushItemWidth(200);
-        rbListBox("", &m_selectedFile, values);
-        ImGui::PopItemWidth();
+    if (m_mdv.IsLoaded()) {
+        if (m_mdv.NumberOfFiles() > 0) {
+            std::vector<std::string> values = m_mdv.List();
+            ImGui::PushItemWidth(200);
+            rbListBox("", &m_selectedFile, values);
+            ImGui::PopItemWidth();
+        }
+        else {
+            ImGui::TextWrapped("MDV image is empty");
+        }
     }
     else {
         ImGui::TextWrapped("No MDV image selected");
@@ -109,9 +119,10 @@ void QLMdvApp::Frame(const float width, const float height) {
     MapDirectory();
     ImGui::End();
 
+    std::string mdvTitle = m_mdv.IsLoaded() ? m_mdv.GetName() : "MDV Image";
     ImGui::SetNextWindowPos(ImVec2(2*panel_margin+panel_width, panel_top), ImGuiCond_Once, (ImVec2){0,0});
     ImGui::SetNextWindowSize(ImVec2(panel_width, panel_height), ImGuiCond_Once);
-    ImGui::Begin("MDV image", 0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+    ImGui::Begin(mdvTitle.c_str(), 0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
     MapMdv();
     ImGui::End();
 

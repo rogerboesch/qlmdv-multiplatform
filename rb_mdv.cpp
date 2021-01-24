@@ -17,6 +17,13 @@ void RBMdv::Load(std::string name, std::string path) {
     LoadFiles();
 }
 
+void RBMdv::Unload() {
+    m_name = "";
+    m_path = "";
+    m_files.clear();
+    m_loaded = false;
+}
+
 std::vector<std::string> RBMdv::List() {
     return m_files;
 }
@@ -55,4 +62,6 @@ void RBMdv::LoadFiles() {
             m_files.emplace_back(filenames[i]);
         }
     }
+    
+    m_loaded = true;
 }

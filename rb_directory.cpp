@@ -7,6 +7,19 @@ RBDirectory::RBDirectory() {
     Read();
 }
 
+std::string RBDirectory::GetName(int index) {
+    if (index >= 0 && index < m_files.size()) {
+        std::string path = m_files[index];
+        return path;
+    }
+    
+    return "";
+}
+
+std::string RBDirectory::GetPath() {
+    return BuildPath();
+}
+
 bool RBDirectory::JumpTo(int index) {
     if (index >= 0 && index < m_files.size()) {
         std::string path = m_files[index];

@@ -12,6 +12,9 @@ public:
     bool IsFile(int index);
     bool IsDirectory(int index);
 
+    std::string GetName(int index);
+    std::string GetPath();
+
     std::vector<std::string> List() { return m_files; }
 
 private:

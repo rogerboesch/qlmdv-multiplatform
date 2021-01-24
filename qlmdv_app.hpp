@@ -24,5 +24,6 @@ private:
 
     int m_selectedDir;
     int m_selectedFile;
+    int m_currentDir;
     std::string m_filename;
 };
