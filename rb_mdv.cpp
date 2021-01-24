@@ -33,8 +33,12 @@ int RBMdv::NumberOfFiles() {
     return m_files.size();
 }
 
-std::string RBMdv::GetFilename(int index) {
+std::string RBMdv::GetFilename(int index, bool includePath) {
     if (index >= 0 && index < m_files.size()) {
+        if (!includePath) {
+            return m_files[index];
+        }
+        
         std::string path = m_temporaryPath + "/" + m_files[index];
         return path;
     }

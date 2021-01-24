@@ -3159,3 +3159,72 @@ const TextEditor::LanguageDefinition& TextEditor::LanguageDefinition::Lua()
 	}
 	return langDef;
 }
+
+const TextEditor::LanguageDefinition& TextEditor::LanguageDefinition::SuperBasic()
+{
+    static bool inited = false;
+    static LanguageDefinition langDef;
+    if (!inited)
+    {
+        static const char* const keywords[] = {
+            "DATA","DEFine","DIM","ELSE","END","ERRor","EXIT","FOR","FuNction","GO",
+            "IF","LET","LOCal","MISTake","NEXT","ON","PROCedure","REMAINDER","REMark",
+            "REPeat","RETurn","SELect","STEP","SUB","THEN","TO","WHEN"
+        };
+
+        for (auto& k : keywords)
+            langDef.mKeywords.insert(k);
+
+        static const char* const identifiers[] = {
+            // Functions
+            "ABS","ACOS","ACOT","ASIN","ATAN","BEEPING","CHR$","CODE","COS","COT","DATE",
+            "DATE$","DAY$","DEG","DIMN","EOF","EXP","FILL$","INKEY$","INT","KEYROW","LEN",
+            "LN","LOG10","PEEK","PEEK_L","PEEK_W","PI","RAD","RND","SIN","SQRT","TAN","VER$",
+            
+            // Devices
+            "CON", "MDV", "NETI", "NETO", "SCR", "SER",
+            
+            // Operators
+            "AND", "DIV", "INSTR", "MOD", "NOT", "OR", "XOR",
+            
+            // Programs
+            "ADATE", "ARC", "ARC_R", "AT", "AUTO", "BAUD", "BEEP", "BLOCK", "BORDER", "CALL",
+            "CIRCLE", "CIRCLE_R", "CLEAR", "CLOSE", "CLS", "CONTINUE", "COPY", "COPY_N", "CSIZE",
+            "CURSOR", "DELETE", "DIR", "DLINE", "EDIT", "ELLIPSE", "ELLIPSE_R", "EXEC", "EXEC_W",
+            "FILL", "FLASH", "FORMAT", "INK", "INPUT", "LBYTES", "LINE", "LINE_R", "LIST", "LOAD",
+            "LRUN", "MERGE", "MODE", "MOVE", "MRUN", "NET", "NEW", "OPEN", "OPEN_IN", "OPEN_NEW",
+            "OVER", "PAN", "PAPER", "PAUSE", "PENDOWN", "PENUP", "POINT", "POINT_R", "POKE", "POKE_L",
+            "POKE_W", "PRINT", "RANDOMISE", "READ", "RECOL", "RENUM", "RESPR", "RESTORE", "RETRY",
+            "RUN", "SAVE", "SBYTES", "SCALE", "SCROLL", "SDATE", "SEXEC", "STOP", "STRIP", "TRA",
+            "TURN", "TURNTO", "UNDER", "WIDTH", "WINDOW"
+        };
+        
+        for (auto& k : identifiers)
+        {
+            Identifier id;
+            id.mDeclaration = "Built-in function";
+            langDef.mIdentifiers.insert(std::make_pair(std::string(k), id));
+        }
+
+        langDef.mTokenRegexStrings.push_back(std::make_pair<std::string, PaletteIndex>("L?\\\"(\\\\.|[^\\\"])*\\\"", PaletteIndex::String));
+        langDef.mTokenRegexStrings.push_back(std::make_pair<std::string, PaletteIndex>("\\\'[^\\\']*\\\'", PaletteIndex::String));
+        langDef.mTokenRegexStrings.push_back(std::make_pair<std::string, PaletteIndex>("[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)([eE][+-]?[0-9]+)?[fF]?", PaletteIndex::Number));
+        langDef.mTokenRegexStrings.push_back(std::make_pair<std::string, PaletteIndex>("[+-]?[0-9]+[Uu]?[lL]?[lL]?", PaletteIndex::Number));
+        langDef.mTokenRegexStrings.push_back(std::make_pair<std::string, PaletteIndex>("0[0-7]+[Uu]?[lL]?[lL]?", PaletteIndex::Number));
+        langDef.mTokenRegexStrings.push_back(std::make_pair<std::string, PaletteIndex>("0[xX][0-9a-fA-F]+[uU]?[lL]?[lL]?", PaletteIndex::Number));
+        langDef.mTokenRegexStrings.push_back(std::make_pair<std::string, PaletteIndex>("[a-zA-Z_][a-zA-Z0-9_]*", PaletteIndex::Identifier));
+        langDef.mTokenRegexStrings.push_back(std::make_pair<std::string, PaletteIndex>("[\\[\\]\\{\\}\\!\\%\\^\\&\\*\\(\\)\\-\\+\\=\\~\\|\\<\\>\\?\\/\\;\\,\\.]", PaletteIndex::Punctuation));
+
+        langDef.mCommentStart = "";
+        langDef.mCommentEnd = "";
+        langDef.mSingleLineComment = "REM ";
+
+        langDef.mCaseSensitive = false;
+        langDef.mAutoIndentation = false;
+
+        langDef.mName = "SuperBasic";
+
+        inited = true;
+    }
+    return langDef;
+}

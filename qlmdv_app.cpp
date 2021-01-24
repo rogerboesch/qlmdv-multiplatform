@@ -48,6 +48,9 @@ QLMdvApp::QLMdvApp() {
     
     std::string path = std::__fs::filesystem::temp_directory_path();
     m_mdv.SetTemporaryPath(path);
+    
+    auto lang = TextEditor::LanguageDefinition::SuperBasic();
+    m_editor.SetLanguageDefinition(lang);
 }
 
 void QLMdvApp::MapDirectory() {
@@ -93,7 +96,7 @@ void QLMdvApp::MapMdv() {
                 
                 m_mdv.ExportAll();
                 
-                m_filename = m_mdv.GetFilename(m_currentFile);
+                m_filename = m_mdv.GetFilename(m_currentFile, true);
                 
                 // Load file
                 std::ifstream t(m_filename);
@@ -163,16 +166,21 @@ void QLMdvApp::Frame(const float width, const float height) {
     MapDirectory();
     ImGui::End();
 
-    std::string mdvTitle = m_mdv.IsLoaded() ? m_mdv.GetName() : "MDV Image";
+    std::string mdvTitle = m_mdv.IsLoaded() ? m_mdv.GetMdvName() : "MDV Image";
     ImGui::SetNextWindowPos(ImVec2(2*panel_margin+panel_width, panel_top), ImGuiCond_Once, (ImVec2){0,0});
     ImGui::SetNextWindowSize(ImVec2(panel_width, panel_height), ImGuiCond_Once);
     ImGui::Begin(mdvTitle.c_str(), 0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
     MapMdv();
     ImGui::End();
 
+    std::string name = "Editor";
+    if (m_filename.size() > 0) {
+        name = name + ": " + m_mdv.GetFilename(m_currentFile, false);
+    }
+    
     ImGui::SetNextWindowPos(ImVec2(3*panel_margin+2*panel_width, panel_top), ImGuiCond_Once, (ImVec2){0,0});
     ImGui::SetNextWindowSize(ImVec2(last_panel_width, panel_height), ImGuiCond_Once);
-    ImGui::Begin("Preview", 0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+    ImGui::Begin(name.c_str(), 0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
     MapFilePreview();
     ImGui::End();
 }

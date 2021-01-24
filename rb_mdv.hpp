@@ -18,9 +18,9 @@ public:
     bool IsLoaded() { return m_loaded; }
     int NumberOfFiles();
 
-    std::string GetName() { return m_name; }
-    std::string GetPath() { return m_path; }
-    std::string GetFilename(int index);
+    std::string GetMdvName() { return m_name; }
+    std::string GetMdvPath() { return m_path; }
+    std::string GetFilename(int index, bool includePath);
     void SetTemporaryPath(std::string path);
     
 private:
