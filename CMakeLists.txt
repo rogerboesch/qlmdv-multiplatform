@@ -53,11 +53,12 @@ set(APP_HEADERS
     qlayt.h
     qlmdv_app.hpp
     rb_directory.hpp
-    rb_mdv.hpp)
+    rb_mdv.hpp
+    texteditor/TextEditor.h)
 if(CMAKE_SYSTEM_NAME STREQUAL Windows)
     add_executable(qlmdv WIN32 rb_app.c ${APP_HEADERS})
 else()
-    add_executable(qlmdv rb_app.c qlt_mdv.c qlt_util.c qlmdv_app.cpp rb_mdv.cpp rb_directory.cpp ${APP_HEADERS})
+    add_executable(qlmdv rb_app.c qlt_mdv.c qlt_util.c qlmdv_app.cpp rb_mdv.cpp rb_directory.cpp texteditor/TextEditor.cpp ${APP_HEADERS})
 endif()
 target_link_libraries(qlmdv sokol)
 

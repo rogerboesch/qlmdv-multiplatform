@@ -63,7 +63,7 @@ void QLMdvApp::MapMdv() {
 
 void QLMdvApp::MapFilePreview() {
     if (m_filename.size() > 0) {
-        ImGui::TextWrapped("Here a text editor will be inserted");
+        m_editor.Render(m_filename.c_str());
     }
     else {
         ImGui::TextWrapped("No file selected");

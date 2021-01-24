@@ -3,6 +3,7 @@
 
 #include "rb_directory.hpp"
 #include "rb_mdv.hpp"
+#include "texteditor/TextEditor.h"
 
 class QLMdvApp {
 public:
@@ -19,7 +20,8 @@ private:
 private:
     RBDirectory m_directory;
     RBMdv m_mdv;
-    
+    TextEditor m_editor;
+
     int m_selectedDir;
     int m_selectedFile;
     std::string m_filename;
