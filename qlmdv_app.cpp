@@ -189,4 +189,12 @@ extern "C" {
     void rbFrame(const float width, const float height) {
         app.Frame(width, height);
     }
+
+    const char* rbGetWindowTitle() {
+        return "QLmdv 0.9.0";
+    }
+
+    ImVec2 rbGetWindowSize() {
+        return ImVec2(800, 600);
+    }
 }

@@ -9,6 +9,8 @@
 #include "sokol_imgui.h"
 
 extern void rbFrame(const float width, const float height);
+extern const char* rbGetWindowTitle();
+extern ImVec2 rbGetWindowSize();
 
 static struct {
     uint64_t laptime;
@@ -55,13 +57,16 @@ static void event(const sapp_event* ev) {
 sapp_desc sokol_main(int argc, char* argv[]) {
     (void)argc;
     (void)argv;
+    
+    ImVec2 size = rbGetWindowSize();
+
     return (sapp_desc){
         .init_cb = init,
         .frame_cb = frame,
         .cleanup_cb = cleanup,
         .event_cb = event,
-        .window_title = "QLmdv 0.9.0",
-        .width = 800,
-        .height = 600,
+        .window_title = rbGetWindowTitle(),
+        .width = size.x,
+        .height = size.y,
     };
 }
