@@ -2,7 +2,11 @@
 #include "rb_mdv.hpp"
 
 extern "C" {
-    #include "qlayt.h"
+    int fil2mdv(char*, char*);
+    int mdv2fil(char*, int);
+
+    extern char filenames[256][37];
+    extern char temppath[256];
 }
 
 RBMdv::RBMdv() {
@@ -56,7 +60,6 @@ void RBMdv::ExportAll() {
     
     printf("Export all files to %s\n", m_temporaryPath.c_str());
     
-    resetglobals();
     int result = mdv2fil((char *)path.c_str(), 1);
 }
 
@@ -67,8 +70,6 @@ void RBMdv::AddAll() {
 }
 
 void RBMdv::LoadFiles() {
-    resetglobals();
-    
     std::string path = m_path + "/" + m_name;
     int result = mdv2fil((char *)path.c_str(), 0);
 
